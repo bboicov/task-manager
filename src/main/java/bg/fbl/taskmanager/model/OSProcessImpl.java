@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ProcessImpl implements Process{
+public class ProcessImpl implements Process {
 
     private final UUID processId;
     private final Priority priority;
