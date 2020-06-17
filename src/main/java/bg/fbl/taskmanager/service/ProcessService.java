@@ -10,6 +10,13 @@ import javax.inject.Singleton;
 import java.time.Instant;
 import java.util.*;
 
+/**
+ * ProcessService is the main point representing process scheduler/supervisor.
+ *
+ * @author  Boyko Boykov
+ * @version 0.5
+ * @since   2020-06-16
+ */
 @Singleton
 public class ProcessService {
 

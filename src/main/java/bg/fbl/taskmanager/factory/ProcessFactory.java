@@ -8,6 +8,14 @@ import javax.inject.Singleton;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * ProcessFactory utilizes "Factory" design pattern to create new processes.
+ * It provides specific control over the entity creation.
+ *
+ * @author  Boyko Boykov
+ * @version 0.5
+ * @since   2020-06-14
+ */
 @Singleton
 public class ProcessFactory {
 

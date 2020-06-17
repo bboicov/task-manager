@@ -4,6 +4,13 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Implementation of the process abstraction.
+ *
+ * @author  Boyko Boykov
+ * @version 0.5
+ * @since   2020-06-15
+ */
 public class OSProcessImpl implements OSProcess {
 
     private final UUID processId;
