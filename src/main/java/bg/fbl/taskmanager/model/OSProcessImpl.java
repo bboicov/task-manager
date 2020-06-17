@@ -4,13 +4,13 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ProcessImpl implements Process {
+public class OSProcessImpl implements OSProcess {
 
     private final UUID processId;
     private final Priority priority;
     private final Instant creationTime;
 
-    public ProcessImpl(UUID processId, Priority priority, Instant creationTime) {
+    public OSProcessImpl(UUID processId, Priority priority, Instant creationTime) {
         this.processId = processId;
         this.priority = priority;
         this.creationTime = creationTime;
@@ -61,7 +61,7 @@ public class ProcessImpl implements Process {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProcessImpl process = (ProcessImpl) o;
+        OSProcessImpl process = (OSProcessImpl) o;
         return processId.equals(process.processId);
     }
 

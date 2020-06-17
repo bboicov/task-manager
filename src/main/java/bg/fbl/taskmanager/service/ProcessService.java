@@ -3,6 +3,8 @@ package bg.fbl.taskmanager.service;
 import bg.fbl.taskmanager.factory.ProcessFactory;
 import bg.fbl.taskmanager.model.OSProcess;
 import bg.fbl.taskmanager.model.Priority;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 import java.time.Instant;
@@ -11,7 +13,9 @@ import java.util.*;
 @Singleton
 public class ProcessService {
 
-    static final private int MAX_PROCESSES = 100;
+    private static final Logger logger = LoggerFactory.getLogger(ProcessService.class);
+
+    static final private int MAX_PROCESSES = 3;
 
     final private ProcessFactory processFactory;
 
@@ -43,8 +47,12 @@ public class ProcessService {
                 break;
         }
 
+        logger.info("process CREATED with id: " + process.getId().toString() + " and priority: "
+            + process.getPriority().toString());
+
         // start the process
         process.run();
+        logger.info("process STARTED with id: " + process.getId().toString());
 
         return process.getId();
     }
@@ -60,9 +68,11 @@ public class ProcessService {
     private void remove(UUID uuid) {
 
         OSProcess process = processPool.remove(uuid);
+        logger.info("process REMOVED from pool with id: " + process.getId().toString());
         // we are not making validation if process will stop gracefully
         // we could force kill if process is still running after certain timeout
         process.kill();
+        logger.info("process KILLED with id: " + process.getId().toString());
     }
 
     private void deleteOldest() {
@@ -105,6 +115,7 @@ public class ProcessService {
             return create(priority);
         }
 
+        logger.error("can't create more processes. limit of " + MAX_PROCESSES + " reached.");
         return null;
     }
 
@@ -124,7 +135,10 @@ public class ProcessService {
         }
 
         // We can't add process based on the requirements and skip it
-        if (priority == Priority.LOW) return null;
+        if (priority == Priority.LOW) {
+            logger.error("can't create more processes. limit of " + MAX_PROCESSES + " reached.");
+            return null;
+        }
 
         if (lowPriorityProcesses.size() > 0) {
             UUID removedId = lowPriorityProcesses.pollFirst();
@@ -136,6 +150,7 @@ public class ProcessService {
             return create(priority);
         }
 
+        logger.error("can't create more processes. limit of " + MAX_PROCESSES + " reached.");
         return null;
     }
 
@@ -190,6 +205,7 @@ public class ProcessService {
         }
 
         // process Id not found
+        logger.error("can't find process with id: " + processId.toString() + " in the pool.");
         return false;
     }
 
@@ -216,6 +232,8 @@ public class ProcessService {
                 UUID uuid = (UUID) iterator.next();
                 remove(uuid);
             }
+
+            logger.info("killed " + targetDQ.size() + " processes with priority: " + priority.toString());
             targetDQ.clear();
         }
     }

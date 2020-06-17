@@ -3,7 +3,8 @@ package bg.fbl.taskmanager.model;
 import java.time.Instant;
 import java.util.UUID;
 
-public interface Process {
+// Represent the abstraction of the process
+public interface OSProcess {
 
     public boolean run();
     public boolean suspend();
